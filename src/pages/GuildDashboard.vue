@@ -128,7 +128,7 @@ const { connected, state, sendAction, addSong, removeSong } = useGuildSocket(gui
 
 /* คลาสแอนิเมชันเมื่อบอทกำลังเล่นเพลง (state.is_playing === true) */
 .bot-dancing {
-  /* รันแอนิเมชันสลับภาพแบบทันที (steps 1) วนซ้ำเรื่อยๆ */
-  animation: bearDance 0.6s steps(1) infinite;
+  /* 🛠️ ปรับตรงนี้: จาก 0.6s เพิ่มเป็น 1.2s เพื่อให้จังหวะโยกหัวช้าลงและดูนุ่มนวลขึ้น */
+  animation: bearDance 1.2s steps(1) infinite;
 }
 </style>
