@@ -15,3 +15,41 @@
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.06);
   }
 }
+
+/* smooth theme switch */
+.app-root, .glass-panel, header.sticky, .glass-pill, input {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+/* ── light theme ─────────────────────────────────────────── */
+[data-theme="light"] { color-scheme: light; }
+[data-theme="light"] body { background-color: #f3f2ed; }
+[data-theme="light"] .app-root { background-color: #f3f2ed; color: #27272a; }
+[data-theme="light"] header.sticky { background-color: rgba(255, 255, 255, 0.72); border-color: rgba(0, 0, 0, 0.08); }
+[data-theme="light"] .glass-panel {
+  background-color: rgba(255, 255, 255, 0.66);
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 28px rgba(30, 27, 75, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+}
+[data-theme="light"] .glass-pill { background-color: rgba(255, 255, 255, 0.7); border-color: rgba(0, 0, 0, 0.1); }
+[data-theme="light"] .text-zinc-50,
+[data-theme="light"] .text-zinc-100 { color: #131316; }
+[data-theme="light"] .text-zinc-200 { color: #27272a; }
+[data-theme="light"] .text-zinc-300 { color: #3f3f46; }
+[data-theme="light"] .text-zinc-400 { color: #52525b; }
+[data-theme="light"] .text-emerald-300 { color: #047857; }
+[data-theme="light"] .text-iris-200 { color: #3c3489; }
+[data-theme="light"] .bg-white\/10 { background-color: rgba(83, 74, 183, 0.1); }
+[data-theme="light"] .border-white\/10 { border-color: rgba(0, 0, 0, 0.1); }
+[data-theme="light"] .border-white\/20 { border-color: rgba(83, 74, 183, 0.35); }
+[data-theme="light"] .hover\:bg-white\/5:hover { background-color: rgba(0, 0, 0, 0.04); }
+[data-theme="light"] .hover\:border-white\/10:hover { border-color: rgba(0, 0, 0, 0.12); }
+[data-theme="light"] .progress-track { background-color: rgba(0, 0, 0, 0.1); }
+[data-theme="light"] input[type="text"] {
+  background-color: rgba(255, 255, 255, 0.85);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #27272a;
+}
+[data-theme="light"] .ctrl-btn { color: #52525b; }
+[data-theme="light"] .ctrl-btn:hover { background-color: rgba(0, 0, 0, 0.06); color: #18181b; }
+[data-theme="light"] ::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.2); }

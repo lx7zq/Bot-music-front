@@ -25,7 +25,7 @@
 
       <!-- paused badge -->
       <div v-if="isPaused" class="absolute inset-0 bg-black/50 backdrop-blur-[1px] flex items-center justify-center">
-        <span class="text-xs font-mono text-zinc-300 tracking-widest uppercase">paused</span>
+        <span class="text-xs font-mono text-white/90 tracking-widest uppercase">paused</span>
       </div>
     </div>
 
@@ -40,7 +40,7 @@
 
     <!-- progress -->
     <div v-if="song">
-      <div class="h-1.5 rounded-full bg-white/10 overflow-hidden">
+      <div class="progress-track h-1.5 rounded-full bg-white/10 overflow-hidden">
         <div
           class="h-full rounded-full bg-gradient-to-r from-iris-500 via-violet-400 to-cyan-300 transition-all duration-1000"
           :style="{ width: progressPct + '%' }"

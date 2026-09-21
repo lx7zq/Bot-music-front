@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-[#0a0a12] font-sans text-zinc-100">
+  <div class="app-root min-h-screen bg-[#0a0a12] font-sans text-zinc-100">
     <!-- ambient background -->
     <div class="fixed inset-0 pointer-events-none">
       <div class="absolute -top-32 left-1/4 w-[480px] h-[480px] bg-iris-500/15 rounded-full blur-[120px]"></div>
@@ -13,7 +13,11 @@
     <header class="sticky top-0 z-10 border-b border-white/10 bg-[#0a0a12]/70 backdrop-blur-xl">
       <div class="max-w-7xl mx-auto px-6 h-14 flex items-center justify-between">
         <div class="flex items-center gap-2.5">
-          <img src="/bear-logo.png" alt="logo" class="w-7 h-7 rounded-lg" />
+          <div
+            class="bear-avatar"
+            :class="{ 'bot-dancing': state?.is_playing }"
+            title="หมีไอแว่น"
+          ></div>
           <span class="text-base font-semibold tracking-tight text-zinc-100">ไอแว่น</span>
           <span class="text-zinc-600 text-sm">/</span>
           <span class="text-zinc-400 text-sm font-medium">{{ state?.guild_name ?? guildId }}</span>
@@ -34,6 +38,7 @@
             </span>
             {{ state.is_playing ? 'playing' : state.is_paused ? 'paused' : 'idle' }}
           </span>
+          <ThemeToggle />
         </div>
       </div>
     </header>
@@ -121,6 +126,7 @@ import { useRoute } from 'vue-router'
 import { useGuildSocket } from '../composables/useGuildSocket'
 import NowPlaying from '../components/NowPlaying.vue'
 import QueueList from '../components/QueueList.vue'
+import ThemeToggle from '../components/ThemeToggle.vue'
 
 const route = useRoute()
 const guildId = computed(() => route.params.guildId)
@@ -138,5 +144,25 @@ const statusLine = computed(() => {
 <style scoped>
 .glass-pill {
   @apply flex items-center gap-1.5 text-xs px-2.5 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur;
+}
+
+/* หมี header: นิ่งเฟรม 1, เต้นตอนเพลงเล่น */
+.bear-avatar {
+  width: 30px;
+  height: 30px;
+  background-image: url('/bear-frame1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+}
+@keyframes bearDance {
+  0%, 100% { background-image: url('/bear-frame1.png'); }
+  25%      { background-image: url('/bear-frame2.png'); }
+  50%      { background-image: url('/bear-frame3.png'); }
+  75%      { background-image: url('/bear-frame4.png'); }
+}
+.bot-dancing {
+  animation: bearDance 1.2s steps(1) infinite;
 }
 </style>
