@@ -112,11 +112,12 @@
           <QueueList
             :queue="state.queue ?? []"
             @remove="removeSong"
-            @add="addSong"
+            @add="handleAdd"
           />
         </div>
       </div>
     </main>
+    <Toast />
   </div>
 </template>
 
@@ -127,11 +128,19 @@ import { useGuildSocket } from '../composables/useGuildSocket'
 import NowPlaying from '../components/NowPlaying.vue'
 import QueueList from '../components/QueueList.vue'
 import ThemeToggle from '../components/ThemeToggle.vue'
+import Toast from '../components/Toast.vue'
+import { useToast } from '../composables/useToast'
 
 const route = useRoute()
 const guildId = computed(() => route.params.guildId)
 
 const { connected, state, sendAction, addSong, removeSong } = useGuildSocket(guildId)
+const { push: pushToast } = useToast()
+
+const handleAdd = (query) => {
+  pushToast('เพิ่มเพลงแล้ว', query)
+  addSong(query)
+}
 
 const statusLine = computed(() => {
   if (!state.value) return 'connecting'
