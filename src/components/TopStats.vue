@@ -3,10 +3,13 @@
     <div
       v-for="stat in stats"
       :key="stat.label"
-      class="bg-zinc-900 rounded-2xl px-4 py-4 flex flex-col gap-1"
+      class="sticker-card px-4 py-3.5 flex items-center gap-3"
     >
-      <span class="text-xs text-zinc-500 uppercase tracking-wide">{{ stat.label }}</span>
-      <span class="text-2xl font-mono font-bold text-zinc-100">{{ stat.value }}</span>
+      <span class="text-xl shrink-0">{{ stat.emoji }}</span>
+      <div class="flex flex-col gap-0.5 min-w-0">
+        <span class="text-xs text-zinc-500 uppercase tracking-wide">{{ stat.label }}</span>
+        <span class="text-xl font-display font-bold text-cream leading-none">{{ stat.value }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -23,10 +26,10 @@ const stats = computed(() => {
   const playing = gList.filter(g => g.is_playing).length
   const totalQ = gList.reduce((a, g) => a + (g.queue?.length || 0), 0)
   return [
-    { label: 'กำลังเล่น', value: playing },
-    { label: 'เซิร์ฟเวอร์', value: gList.length },
-    { label: 'ใน Queue', value: totalQ },
-    { label: 'สถานะ', value: playing ? 'LIVE' : 'IDLE' },
+    { label: 'กำลังเล่น', value: playing, emoji: '🎶' },
+    { label: 'เซิร์ฟเวอร์', value: gList.length, emoji: '🐻' },
+    { label: 'ใน Queue', value: totalQ, emoji: '🎫' },
+    { label: 'สถานะ', value: playing ? 'LIVE' : 'IDLE', emoji: playing ? '🟢' : '💤' },
   ]
 })
 </script>

@@ -15,7 +15,7 @@
             :class="{ 'bot-dancing': state?.is_playing }"
           ></div>
 
-          <span class="text-lg font-mono font-bold text-iris-400">ไอแว่น</span>
+          <span class="text-lg font-display font-bold text-iris-400">ไอแว่น</span>
           <span class="text-zinc-600 text-sm">/</span>
           <span class="text-zinc-400 text-sm font-medium">{{ state?.guild_name ?? guildId }}</span>
         </div>
@@ -49,8 +49,45 @@
 
     <main class="max-w-7xl mx-auto px-6 py-8">
 
+      <!-- 🐻 Bear Stage -->
+      <section v-if="state" class="relative overflow-hidden rounded-3xl border-2 border-zinc-800 bg-gradient-to-br from-zinc-900 via-zinc-900 to-iris-900/40 p-6 mb-6 animate-fade-in">
+        <div class="absolute -top-10 -right-10 w-48 h-48 bg-iris-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute -bottom-12 -left-8 w-40 h-40 bg-honey-400/10 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="relative flex items-center gap-5">
+          <div class="relative shrink-0">
+            <div
+              class="bear-stage"
+              :class="{ 'bot-dancing': state.is_playing, 'bear-sleepy': !state.is_playing && !state.is_paused }"
+            ></div>
+            <span v-if="!state.is_playing && !state.is_paused" class="absolute -top-2 -right-2 text-lg animate-float">💤</span>
+            <span v-if="state.is_playing" class="absolute -top-2 -right-3 flex items-end gap-[2px]">
+              <span class="w-1 bg-honey-400 rounded-full origin-bottom animate-bar1" style="height:12px"></span>
+              <span class="w-1 bg-honey-400 rounded-full origin-bottom animate-bar2" style="height:18px"></span>
+              <span class="w-1 bg-honey-400 rounded-full origin-bottom animate-bar3" style="height:9px"></span>
+            </span>
+          </div>
+          <div class="min-w-0 flex-1">
+            <p class="font-display font-bold text-lg leading-tight text-cream">
+              {{ stageTitle }}
+            </p>
+            <div class="mt-2 inline-flex max-w-full items-center gap-2 rounded-2xl rounded-tl-md border border-zinc-700/80 bg-zinc-950/80 px-3.5 py-2">
+              <span class="shrink-0">💬</span>
+              <p class="truncate text-sm text-zinc-200">{{ bubbleText }}</p>
+            </div>
+            <p class="mt-2 text-xs text-zinc-500">
+              {{ state.guild_name }} <span v-if="state.channel_name">• 🔊 {{ state.channel_name }}</span>
+            </p>
+          </div>
+          <div class="hidden sm:flex shrink-0 flex-col items-center gap-1 rounded-2xl border border-zinc-800 bg-zinc-950/60 px-4 py-3">
+            <span class="text-2xl font-display font-bold text-honey-400">{{ (state.queue ?? []).length }}</span>
+            <span class="text-xs text-zinc-500">คิวรออยู่</span>
+          </div>
+        </div>
+      </section>
+
       <div v-if="!state" class="flex flex-col items-center justify-center py-32 gap-4 text-zinc-600">
-        <svg class="w-16 h-16 opacity-20" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
+        <img src="/bear-frame1.png" alt="หมีรอเพลง" class="w-20 h-20 animate-float" style="image-rendering: pixelated" />
+        <svg class="w-10 h-10 opacity-20" fill="none" stroke="currentColor" stroke-width="1.2" viewBox="0 0 24 24">
           <path d="M9 19V6l12-3v13M9 19a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm12 0a2 2 0 1 1-4 0 2 2 0 0 1 4 0z"/>
         </svg>
         <p class="text-sm">{{ connected ? 'รอข้อมูลจาก bot...' : 'กำลังเชื่อมต่อ...' }}</p>
@@ -103,9 +140,43 @@ const route = useRoute()
 const guildId = computed(() => route.params.guildId)
 
 const { connected, state, sendAction, addSong, removeSong } = useGuildSocket(guildId)
+
+const stageTitle = computed(() => {
+  if (!state.value) return 'หมีไอแว่น DJ 🐻'
+  if (state.value.is_playing) return 'หมีกำลังโยก! 🎶'
+  if (state.value.is_paused) return 'พักแป๊บ... ⏸️'
+  return 'หมีหิวเพลง! 🍯'
+})
+
+const bubbleText = computed(() => {
+  const s = state.value
+  if (!s) return 'กำลังเชื่อมต่อ...'
+  if (s.now_playing?.title) {
+    if (s.is_playing) return `กำลังเปิด ${s.now_playing.title} ♡`
+    if (s.is_paused) return `หยุดไว้ที่ ${s.now_playing.title} กดเล่นต่อได้เลยนะ`
+    return `${s.now_playing.title}`
+  }
+  if ((s.queue ?? []).length) return `มี ${(s.queue ?? []).length} เพลงรออยู่ กดเล่นได้เลย!`
+  return 'ขอเพลงหน่อยสิ พิมพ์ชื่อเพลงข้างล่างได้เลย ♡'
+})
 </script>
 
 <style scoped>
+.bear-stage {
+  width: 96px;
+  height: 96px;
+  background-image: url('/bear-frame1.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  image-rendering: pixelated;
+  filter: drop-shadow(0 6px 16px rgba(83, 74, 183, 0.45));
+}
+.bear-sleepy {
+  animation: float 3s ease-in-out infinite;
+  filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.5)) grayscale(0.2);
+}
+
 /* ท่าปกติเมื่อไม่ได้เล่นเพลง (ดึงเฟรม 1 ขึ้นมาแสดงรอไว้) */
 .bear-avatar {
   width: 32px;

@@ -1,16 +1,19 @@
 <template>
-  <div class="bg-zinc-900 rounded-2xl p-5 animate-fade-in">
-    <h2 class="font-semibold text-sm text-zinc-300 tracking-wide uppercase mb-3">เซิร์ฟเวอร์</h2>
+  <div class="sticker-card p-5 animate-fade-in">
+    <h2 class="font-display font-bold text-sm text-cream tracking-wide uppercase mb-3">🐻 ห้องหมี</h2>
 
-    <div v-if="!guildList.length" class="text-zinc-600 text-sm py-4 text-center">ยังไม่มีเซิร์ฟเวอร์</div>
+    <div v-if="!guildList.length" class="flex flex-col items-center gap-2 text-zinc-600 text-sm py-6">
+      <img src="/bear-frame3.png" alt="ยังไม่มีเซิร์ฟเวอร์" class="w-12 h-12 opacity-70" style="image-rendering: pixelated" />
+      ยังไม่มีเซิร์ฟเวอร์
+    </div>
 
     <ul class="flex flex-col gap-1">
       <li
         v-for="g in guildList"
         :key="g.id"
         @click="emit('select', g.id)"
-        class="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition"
-        :class="g.id === active ? 'bg-iris-500/15 ring-1 ring-iris-500/30' : 'hover:bg-zinc-800'"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-xl cursor-pointer transition border"
+        :class="g.id === active ? 'bg-iris-500/15 border-iris-500/40 shadow-sticker-sm' : 'border-transparent hover:bg-zinc-800/80 hover:border-zinc-700'"
       >
         <div
           class="w-9 h-9 rounded-full flex items-center justify-center text-xs font-semibold shrink-0 font-mono"
