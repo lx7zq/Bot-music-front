@@ -1,6 +1,8 @@
 import { ref, reactive, onUnmounted } from 'vue'
 
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws'
+const WS_URL = (import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws')
+  // ทน env ที่ใส่ scheme มาผิด (https:// → wss://, http:// → ws://)
+  .replace(/^https:\/\//, 'wss://').replace(/^http:\/\//, 'ws://')
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 export function useWebSocket() {
@@ -77,7 +79,18 @@ export function useWebSocket() {
    */
   async function sendAction(action, extra = {}) {
     if (!activeGuild.value) return
-    send({ guild_id: activeGuild.value, action, ...extra })
+    const payload = { guild_id: activeGuild.value, action, ...extra }
+    if (send(payload)) return
+    // fallback: WS ไม่พร้อม → ยิง HTTP แทน
+    try {
+      await fetch(`${API_URL}/command`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      })
+    } catch (e) {
+      console.warn('[sendAction] fetch error', e)
+    }
   }
 
   /** เพิ่มเพลง — ส่งผ่าน HTTP /add_song แล้วให้ bot poll ไปเอง */

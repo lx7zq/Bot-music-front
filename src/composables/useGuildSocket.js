@@ -1,6 +1,8 @@
 import { ref, watch, onUnmounted } from 'vue'
 
-const WS_URL  = import.meta.env.VITE_WS_URL  || 'ws://localhost:8000/ws'
+const WS_URL  = (import.meta.env.VITE_WS_URL  || 'ws://localhost:8000/ws')
+  // ทน env ที่ใส่ scheme มาผิด (https:// → wss://, http:// → ws://)
+  .replace(/^https:\/\//, 'wss://').replace(/^http:\/\//, 'ws://')
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 
 export function useGuildSocket(guildId /* Ref<string> */) {
@@ -58,7 +60,14 @@ export function useGuildSocket(guildId /* Ref<string> */) {
     const payload = { guild_id: guildId.value, action, ...extra }
     if (ws?.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify(payload))
+      return
     }
+    // fallback: WS ไม่พร้อม (ยังไม่ต่อ / Render sleep) → ยิง HTTP แทน
+    await fetch(`${API_URL}/command`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(console.warn)
   }
 
   async function addSong(query) {
