@@ -29,9 +29,18 @@
         </div>
       </div>
 
-      <div v-if="statusLine" class="mt-4 px-4 py-3 rounded-2xl text-sm border animate-pop-in"
-        :class="statusLine.ok ? 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200' : 'border-red-400/30 bg-red-500/10 text-red-200'">
-        {{ statusLine.text }}
+      <div v-if="statusLine" class="mt-4 p-4 rounded-2xl border animate-pop-in flex items-center gap-3 shadow-lg"
+        :class="statusLine.ok
+          ? 'border-emerald-400/40 bg-emerald-500/15 text-emerald-100 shadow-emerald-500/10'
+          : 'border-red-400/40 bg-red-500/15 text-red-100 shadow-red-500/10'">
+        <component
+          :is="statusLine.pending ? Loader2 : (statusLine.ok ? CheckCircle2 : XCircle)"
+          class="w-6 h-6 shrink-0"
+          :class="{ 'animate-spin': statusLine.pending }" />
+        <div class="min-w-0">
+          <p class="font-semibold text-[15px]">{{ statusLine.title }}</p>
+          <p class="text-[13px] opacity-80 mt-0.5">{{ statusLine.text }}</p>
+        </div>
       </div>
 
       <div class="glass-panel mt-4 p-6 flex flex-col gap-5">
@@ -44,11 +53,19 @@
 
         <label class="text-sm">
           <span class="font-medium">รูปสลิป</span>
-          <div class="mt-2 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-5 text-center cursor-pointer hover:border-iris-400/40 hover:bg-white/[0.04] transition">
+          <div class="mt-2 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-5 text-center cursor-pointer hover:border-iris-400/40 hover:bg-white/[0.04] transition overflow-hidden">
             <input @change="onFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" ref="fileInput" />
-            <div @click="$refs.fileInput.click()">
+            <div v-if="previewUrl" class="relative">
+              <img :src="previewUrl" alt="ตัวอย่างสลิป" class="max-h-64 mx-auto rounded-xl border border-white/10 object-contain" />
+              <p class="mt-2 text-xs text-zinc-400 truncate">{{ file?.name }}</p>
+              <button @click.stop="removeFile" type="button"
+                class="mt-2 inline-flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-full border border-white/15 text-zinc-300 hover:bg-white/10 transition">
+                <X class="w-3.5 h-3.5" />เปลี่ยนรูป
+              </button>
+            </div>
+            <div v-else @click="$refs.fileInput.click()">
               <Upload class="w-6 h-6 mx-auto text-zinc-500" />
-              <p class="mt-2 text-[13px] text-zinc-300">{{ file ? file.name : 'แตะเพื่อเลือกรูป (png/jpg ไม่เกิน 5MB)' }}</p>
+              <p class="mt-2 text-[13px] text-zinc-300">แตะเพื่อเลือกรูป (png/jpg ไม่เกิน 5MB)</p>
             </div>
           </div>
         </label>
@@ -71,6 +88,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   Receipt, Upload, CheckCircle2, Gift, AlertTriangle, XCircle, MinusCircle,
+  Loader2, X,
 } from 'lucide-vue-next'
 import SiteNav from '../components/SiteNav.vue'
 import SiteFooter from '../components/SiteFooter.vue'
@@ -107,14 +125,14 @@ async function pollOnce() {
     if (p.status === 'approved') {
       stopPolling()
       await refresh()
-      statusLine.value = { ok: true, text: `อนุมัติแล้ว ใช้งานได้ถึง ${p.paid_until || ''} กลับไปเปิดเพลงได้เลย` }
+      statusLine.value = { ok: true, title: 'อนุมัติแล้ว', text: `ใช้งานได้ถึง ${p.paid_until || ''} กลับไปเปิดเพลงได้เลย` }
     } else if (p.status === 'rejected') {
       stopPolling()
       await refresh()
-      statusLine.value = { ok: false, text: 'สลิปถูกตีกลับ (ยอดไม่ตรง/รูปไม่ชัด) ส่งใบใหม่หรือติดต่อแอดมิน' }
+      statusLine.value = { ok: false, title: 'สลิปถูกตีกลับ', text: 'ยอดไม่ตรงหรือรูปไม่ชัด ส่งใบใหม่หรือติดต่อแอดมิน' }
     } else if (pollCount >= 60) {
       stopPolling()
-      statusLine.value = { ok: true, text: 'ยังรอตรวจอยู่ ถ้านานเกิน 1 วันทักแอดมินได้เลย (กดรีเฟรชเช็คได้)' }
+      statusLine.value = { ok: true, pending: true, title: 'ยังรอตรวจอยู่', text: 'ถ้านานเกิน 1 วันทักแอดมินได้เลย (กดรีเฟรชเช็คได้)' }
     }
   } catch {
     if (pollCount >= 60) stopPolling()
@@ -125,12 +143,34 @@ function startPolling(id) {
   stopPolling()
   pendingId.value = id
   pollCount = 0
-  statusLine.value = { ok: true, text: 'รับสลิปแล้ว กำลังรอตรวจ หน้านี้จะอัปเดตเองเมื่ออนุมัติ' }
+  statusLine.value = { ok: true, pending: true, title: 'รับสลิปแล้ว', text: 'กำลังรอตรวจ หน้านี้จะอัปเดตเองเมื่ออนุมัติ' }
   pollTimer = setInterval(pollOnce, 5000)
 }
 
+const previewUrl = ref(null)
+
+function revokePreview() {
+  if (previewUrl.value) URL.revokeObjectURL(previewUrl.value)
+  previewUrl.value = null
+}
+
 function onFile(e) {
-  file.value = e.target.files?.[0] || null
+  const f = e.target.files?.[0] || null
+  revokePreview()
+  file.value = null
+  if (!f) return
+  if (f.size > 5 * 1024 * 1024) {
+    statusLine.value = { ok: false, title: 'ไฟล์ใหญ่เกินไป', text: 'รูปต้องไม่เกิน 5MB เลือกรูปใหม่' }
+    e.target.value = ''
+    return
+  }
+  file.value = f
+  previewUrl.value = URL.createObjectURL(f)
+}
+
+function removeFile() {
+  revokePreview()
+  file.value = null
 }
 
 async function refresh() {
@@ -182,17 +222,18 @@ async function submit() {
     )
     const data = await r.json()
     if (!r.ok) throw new Error(data.detail || 'ส่งไม่สำเร็จ')
+    revokePreview()
     file.value = null
     await refresh()
     startPolling(data.pending_id)
   } catch (e) {
-    statusLine.value = { ok: false, text: `${e.message} ลองใหม่อีกครั้ง` }
+    statusLine.value = { ok: false, title: 'ส่งไม่สำเร็จ', text: `${e.message} ลองใหม่อีกครั้ง` }
   } finally {
     sending.value = false
   }
 }
 
-watch(guildId, () => { stopPolling(); refresh() })
+watch(guildId, () => { stopPolling(); revokePreview(); refresh() })
 onMounted(refresh)
-onUnmounted(stopPolling)
+onUnmounted(() => { stopPolling(); revokePreview() })
 </script>
