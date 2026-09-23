@@ -6,6 +6,10 @@
       <h1 class="mt-4 text-3xl font-bold tracking-tight">แพ็กเกจ 🐻</h1>
       <p class="mt-2 text-sm text-zinc-500">จ่ายดิสละครั้งเดียว ใช้ได้ทุกห้องในดิสนั้น</p>
 
+      <div v-if="trialDays > 0" class="mt-4 inline-block rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1.5 text-sm text-emerald-200">
+        🎁 ดิสใหม่ทดลองใช้ฟรี {{ trialDays }} วัน ไม่ต้องจ่ายก่อน
+      </div>
+
       <div class="glass-panel mt-8 p-6 sm:p-8 text-center">
         <p class="text-5xl font-bold">{{ priceText }}<span class="text-lg text-zinc-400">฿/เดือน</span></p>
         <p class="mt-2 text-sm text-zinc-400">ต่อดิส • ใช้ได้ {{ planDays }} วัน • หมดอายุยังฟังต่อได้อีก {{ graceDays }} วัน</p>
@@ -49,6 +53,7 @@ const invite = inviteUrl()
 const priceText = ref('99')
 const planDays = ref(30)
 const graceDays = ref(3)
+const trialDays = ref(30)
 const qrUrl = ref('')
 
 onMounted(async () => {
@@ -58,6 +63,7 @@ onMounted(async () => {
     priceText.value = String(cfg.price ?? 99)
     planDays.value = cfg.plan_days ?? 30
     graceDays.value = cfg.grace_days ?? 3
+    trialDays.value = cfg.trial_days ?? 0
     if (cfg.promptpay_id) {
       const payload = generatePayload(cfg.promptpay_id, { amount: Number(cfg.price ?? 99) })
       qrUrl.value = await QRCode.toDataURL(payload, { width: 224, margin: 1 })

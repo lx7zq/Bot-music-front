@@ -72,6 +72,8 @@ async function refresh() {
 const subText = computed(() => {
   if (!sub.value) return '—'
   if (sub.value.paid) return `✅ ใช้งานได้ถึง ${sub.value.paid_until}`
+  if (sub.value.trial) return `🎁 ทดลองใช้เหลืออีก ${sub.value.trial_left} วัน ยังไม่ต้องจ่าย`
+  if (sub.value.trial_expired) return 'หมดช่วงทดลองแล้ว — ส่งสลิปเพื่อเริ่มแพ็กเกจ 99฿/เดือนได้เลย'
   if (sub.value.in_grace) return `⚠️ หมดอายุ ${sub.value.paid_until} (ยังฟังได้ช่วงผ่อนผัน รีบต่อนะ)`
   if (sub.value.paid_until) return `❌ หมดอายุ ${sub.value.paid_until} — ส่งสลิปเพื่อต่ออายุ`
   return 'ยังไม่เคยสมัคร — ส่งสลิปครั้งแรกได้เลย'
