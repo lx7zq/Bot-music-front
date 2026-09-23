@@ -67,7 +67,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import {
   Receipt, Upload, CheckCircle2, Gift, AlertTriangle, XCircle, MinusCircle,
@@ -84,6 +84,50 @@ const statusLine = ref(null)
 const sub = ref(null)
 
 const canSubmit = computed(() => guildId.value.trim() && file.value)
+
+// หลังส่งสลิป หน้าเว็บถามสถานะใบนี้เองทุก 5 วิ (สูงสุด ~5 นาที)
+// อนุมัติในดิสเมื่อไร หน้านี้รู้เองโดยไม่ต้องกดรีเฟรช
+const pendingId = ref(null)
+let pollTimer = null
+let pollCount = 0
+
+function stopPolling() {
+  if (pollTimer) clearInterval(pollTimer)
+  pollTimer = null
+  pendingId.value = null
+}
+
+async function pollOnce() {
+  if (!pendingId.value) return stopPolling()
+  pollCount += 1
+  try {
+    const r = await fetch(`${API_URL}/billing/pending/${pendingId.value}`)
+    if (!r.ok) throw new Error()
+    const p = await r.json()
+    if (p.status === 'approved') {
+      stopPolling()
+      await refresh()
+      statusLine.value = { ok: true, text: `อนุมัติแล้ว ใช้งานได้ถึง ${p.paid_until || ''} กลับไปเปิดเพลงได้เลย` }
+    } else if (p.status === 'rejected') {
+      stopPolling()
+      await refresh()
+      statusLine.value = { ok: false, text: 'สลิปถูกตีกลับ (ยอดไม่ตรง/รูปไม่ชัด) ส่งใบใหม่หรือติดต่อแอดมิน' }
+    } else if (pollCount >= 60) {
+      stopPolling()
+      statusLine.value = { ok: true, text: 'ยังรอตรวจอยู่ ถ้านานเกิน 1 วันทักแอดมินได้เลย (กดรีเฟรชเช็คได้)' }
+    }
+  } catch {
+    if (pollCount >= 60) stopPolling()
+  }
+}
+
+function startPolling(id) {
+  stopPolling()
+  pendingId.value = id
+  pollCount = 0
+  statusLine.value = { ok: true, text: 'รับสลิปแล้ว กำลังรอตรวจ หน้านี้จะอัปเดตเองเมื่ออนุมัติ' }
+  pollTimer = setInterval(pollOnce, 5000)
+}
 
 function onFile(e) {
   file.value = e.target.files?.[0] || null
@@ -138,9 +182,9 @@ async function submit() {
     )
     const data = await r.json()
     if (!r.ok) throw new Error(data.detail || 'ส่งไม่สำเร็จ')
-    statusLine.value = { ok: true, text: 'รับสลิปแล้ว กำลังรอตรวจ (ปกติไม่กี่นาที) ส่งแล้วไม่ต้องส่งซ้ำ' }
     file.value = null
     await refresh()
+    startPolling(data.pending_id)
   } catch (e) {
     statusLine.value = { ok: false, text: `${e.message} ลองใหม่อีกครั้ง` }
   } finally {
@@ -148,6 +192,7 @@ async function submit() {
   }
 }
 
-watch(guildId, refresh)
+watch(guildId, () => { stopPolling(); refresh() })
 onMounted(refresh)
+onUnmounted(stopPolling)
 </script>
