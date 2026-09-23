@@ -66,7 +66,7 @@
         <!-- view-only notice: ลิงก์ไม่มี key = เห็นครบแต่ปุ่มแดงกดไม่ติด -->
         <div v-if="!canControl" class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 flex items-center gap-3 text-sm text-zinc-400 animate-fade-in">
           <span class="shrink-0 text-lg">👀</span>
-          <p>โหมดดูอย่างเดียว — ปุ่มแดง (หยุดล้าง/เสียง/ลบเพลง) เป็นของ DJ กดปุ่ม <b class="text-zinc-200">เปิด Dashboard</b> ในดิสเพื่อขอลิงก์ DJ นะ ♡ ขอเพลงด้านล่างได้ปกติ</p>
+          <p>โหมดดูอย่างเดียว — ปุ่มแดง (หยุดล้าง/เสียง/ลบเพลง) เป็นของ DJ พิมพ์ <b class="text-zinc-200">/dashboard</b> ในดิสเพื่อขอลิงก์ DJ นะ ♡ ขอเพลงด้านล่างได้ปกติ</p>
         </div>
         <!-- slim now-playing hero -->
         <section class="glass-panel relative overflow-hidden p-5 animate-fade-in">
