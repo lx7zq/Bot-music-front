@@ -64,7 +64,7 @@
 
       <!-- ══ stats ══ -->
       <section class="max-w-5xl mx-auto px-6 py-2">
-        <div class="grid grid-cols-3 gap-3 max-w-lg mx-auto text-center">
+        <div class="grid grid-cols-2 gap-3 max-w-md mx-auto text-center">
           <div class="glass-panel py-4 px-2">
             <p class="font-display text-2xl sm:text-3xl font-bold text-iris-100">{{ stats.guilds }}</p>
             <p class="text-[11px] text-zinc-500 mt-0.5">🏠 ดิสที่ติดตั้ง</p>
@@ -72,10 +72,6 @@
           <div class="glass-panel py-4 px-2">
             <p class="font-display text-2xl sm:text-3xl font-bold text-emerald-300">{{ stats.listeners }}</p>
             <p class="text-[11px] text-zinc-500 mt-0.5">🎧 คนฟังตอนนี้</p>
-          </div>
-          <div class="glass-panel py-4 px-2">
-            <p class="font-display text-2xl sm:text-3xl font-bold text-cyan-200">{{ stats.ping }}</p>
-            <p class="text-[11px] text-zinc-500 mt-0.5">⚡ ปิงบอท</p>
           </div>
         </div>
       </section>
@@ -136,7 +132,7 @@ import TypingDemo from '../components/TypingDemo.vue'
 import { API_URL, inviteUrl } from '../config'
 
 const invite = inviteUrl()
-const stats = ref({ guilds: '…', listeners: '…', ping: '…' })
+const stats = ref({ guilds: '…', listeners: '…' })
 const live = ref([])
 
 const cmds = ['/play', '/search', '/skip', '/pause', '/resume', '/queue', '/nowplaying', '/panel', '/volume', '/clear', '/stop', '/leave', '/join', '/dashboard', '/subscription']
@@ -168,11 +164,10 @@ async function loadLive() {
     stats.value = {
       guilds: s.guilds ?? 0,
       listeners: s.listeners ?? 0,
-      ping: s.ping_ms != null ? `~${s.ping_ms}ms` : '—',
     }
     live.value = l.live ?? []
   } catch {
-    stats.value = { guilds: 0, listeners: 0, ping: '—' }
+    stats.value = { guilds: 0, listeners: 0 }
   }
 }
 
