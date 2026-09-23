@@ -58,15 +58,15 @@
       <div v-else class="flex flex-col gap-5">
         <!-- expired banner -->
         <div v-if="!subOk" class="rounded-2xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 flex items-center gap-3 text-sm text-amber-200/90 animate-fade-in">
-          <span class="shrink-0 text-lg">⚠️</span>
+          <AlertTriangle class="shrink-0 w-5 h-5" />
           <p>แพ็กเกจดิสนี้หมดอายุแล้ว{{ paidUntil ? ` (${paidUntil})` : '' }} — กดเล่นเพลงใหม่ไม่ได้
             <RouterLink to="/pricing" class="underline font-semibold">ต่ออายุ 99฿/เดือน</RouterLink>
           </p>
         </div>
         <!-- view-only notice: ลิงก์ไม่มี key = เห็นครบแต่ปุ่มแดงกดไม่ติด -->
         <div v-if="!canControl" class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 flex items-center gap-3 text-sm text-zinc-400 animate-fade-in">
-          <span class="shrink-0 text-lg">👀</span>
-          <p>โหมดดูอย่างเดียว — ปุ่มแดง (หยุดล้าง/เสียง/ลบเพลง) เป็นของ DJ กดปุ่ม <b class="text-zinc-200">🖥️ เปิด Dashboard</b> หรือพิมพ์ <b class="text-zinc-200">/dashboard</b> ในดิสเพื่อขอลิงก์ DJ นะ ♡ ขอเพลงด้านล่างได้ปกติ</p>
+          <Eye class="shrink-0 w-5 h-5 text-zinc-500" />
+          <p>โหมดดูอย่างเดียว — ปุ่มหยุดล้าง เสียง และลบเพลงเป็นของ DJ กดปุ่ม <b class="text-zinc-200">เปิด Dashboard</b> หรือพิมพ์ <b class="text-zinc-200">/dashboard</b> ในดิสเพื่อขอลิงก์ DJ ขอเพลงด้านล่างได้ตามปกติ</p>
         </div>
         <!-- slim now-playing hero -->
         <section class="glass-panel relative overflow-hidden p-5 animate-fade-in">
@@ -134,7 +134,7 @@
     </main>
     <footer class="relative border-t border-white/10 py-4 mt-4">
       <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center gap-x-5 gap-y-1 text-[11px] text-zinc-600">
-        <span>🐻 ไอแว่น DJ</span>
+        <span>ไอแว่น DJ</span>
         <RouterLink to="/pricing" class="hover:text-zinc-300">แพ็กเกจ</RouterLink>
         <RouterLink to="/billing" class="hover:text-zinc-300">ส่งสลิป</RouterLink>
         <RouterLink to="/terms" class="hover:text-zinc-300">ข้อกำหนด</RouterLink>
@@ -148,6 +148,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
+import { AlertTriangle, Eye } from 'lucide-vue-next'
 import { useGuildSocket } from '../composables/useGuildSocket'
 import NowPlaying from '../components/NowPlaying.vue'
 import QueueList from '../components/QueueList.vue'

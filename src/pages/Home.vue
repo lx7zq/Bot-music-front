@@ -13,7 +13,7 @@
       <!-- ══ hero ══ -->
       <section class="max-w-5xl mx-auto px-6 pt-12 pb-6 text-center">
         <div class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1.5 text-[13px] text-emerald-200 animate-fade-in">
-          🎁 ดิสใหม่ทดลองใช้ฟรี 30 วัน ไม่ต้องจ่ายก่อน
+          <Gift class="w-4 h-4" />ดิสใหม่ทดลองใช้ฟรี 30 วัน ไม่ต้องจ่ายก่อน
         </div>
         <div class="mt-6 flex justify-center">
           <img src="/bear-logo.png" alt="หมีไอแว่น" class="w-28 h-28 rounded-[2rem] object-contain bg-white/5 border border-white/10 p-2 animate-float" />
@@ -24,7 +24,7 @@
         <p class="mt-3 font-display text-xl text-zinc-300">บอทเพลงคุณภาพสูง ไม่มีคำสั่งพรีเมี่ยม</p>
         <p class="mt-2 text-zinc-400 text-sm max-w-xl mx-auto">แค่เอาเข้าดิสก็เล่นได้เลย — พิมพ์ <code class="px-1.5 py-0.5 rounded bg-iris-500/20 border border-iris-400/30 text-iris-100 font-mono text-[13px]">/play</code> ชื่อเพลง จบ</p>
         <div class="mt-7 flex flex-wrap justify-center gap-3 text-sm">
-          <a :href="invite" target="_blank" rel="noopener" class="px-8 py-3.5 rounded-full bg-iris-500 hover:bg-iris-400 text-white font-semibold transition shadow-[0_4px_28px_rgba(83,74,183,0.5)] active:scale-95">🤖 เชิญบอทเข้าดิสคอร์ด</a>
+          <a :href="invite" target="_blank" rel="noopener" class="px-8 py-3.5 rounded-full bg-iris-500 hover:bg-iris-400 text-white font-semibold transition shadow-[0_4px_28px_rgba(83,74,183,0.5)] active:scale-95 inline-flex items-center gap-2"><Bot class="w-4 h-4" />เชิญบอทเข้าดิสคอร์ด</a>
           <RouterLink to="/pricing" class="px-8 py-3.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 font-medium transition active:scale-95">ดูแพ็กเกจ 99฿</RouterLink>
         </div>
       </section>
@@ -50,13 +50,13 @@
             <div v-for="(s, i) in live" :key="i" class="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/[0.03] px-3 py-2.5 animate-fade-in">
               <div class="w-11 h-11 rounded-xl overflow-hidden bg-white/5 border border-white/10 shrink-0">
                 <img v-if="s.thumbnail" :src="s.thumbnail" :alt="s.title" class="w-full h-full object-cover" />
-                <div v-else class="w-full h-full flex items-center justify-center text-zinc-600">♪</div>
+                <div v-else class="w-full h-full flex items-center justify-center text-zinc-600"><Music class="w-5 h-5" /></div>
               </div>
               <p class="text-[13px] text-zinc-200 truncate">{{ s.title }}</p>
             </div>
           </div>
           <div v-else class="mt-4 rounded-2xl border border-dashed border-white/10 px-4 py-6 text-center">
-            <p class="text-sm text-zinc-400">ตอนนี้เงียบอยู่ — เป็นดิสแรกที่เปิดเพลงสิ 👇</p>
+            <p class="text-sm text-zinc-400">ตอนนี้เงียบอยู่ — เป็นดิสแรกที่เปิดเพลงสิ</p>
             <a :href="invite" target="_blank" rel="noopener" class="mt-3 inline-block px-6 py-2.5 rounded-full bg-iris-500 hover:bg-iris-400 text-white text-sm font-semibold transition active:scale-95">เชิญบอทเลย ฟรี 30 วัน</a>
           </div>
         </div>
@@ -67,11 +67,11 @@
         <div class="grid grid-cols-2 gap-3 max-w-md mx-auto text-center">
           <div class="glass-panel py-4 px-2">
             <p class="font-display text-2xl sm:text-3xl font-bold text-iris-100">{{ stats.guilds }}</p>
-            <p class="text-[11px] text-zinc-500 mt-0.5">🏠 ดิสที่ติดตั้ง</p>
+            <p class="text-[11px] text-zinc-500 mt-0.5 flex items-center justify-center gap-1"><Home class="w-3 h-3" />ดิสที่ติดตั้ง</p>
           </div>
           <div class="glass-panel py-4 px-2">
             <p class="font-display text-2xl sm:text-3xl font-bold text-emerald-300">{{ stats.listeners }}</p>
-            <p class="text-[11px] text-zinc-500 mt-0.5">🎧 คนฟังตอนนี้</p>
+            <p class="text-[11px] text-zinc-500 mt-0.5 flex items-center justify-center gap-1"><Headphones class="w-3 h-3" />คนฟังตอนนี้</p>
           </div>
         </div>
       </section>
@@ -85,11 +85,13 @@
 
       <!-- ══ how to add ══ -->
       <section class="max-w-5xl mx-auto px-6 py-12">
-        <h2 class="font-display text-3xl font-bold text-center">วิธีเอาบอทเข้าดิส 🐻</h2>
+        <h2 class="font-display text-3xl font-bold text-center">วิธีเอาบอทเข้าดิส</h2>
         <div class="mt-8 grid grid-cols-1 sm:grid-cols-3 gap-4">
           <div v-for="(s, i) in steps" :key="i" class="glass-panel p-6 text-center hover:border-iris-400/30 transition">
             <p class="font-mono text-xs text-zinc-600">ขั้นตอนที่ {{ i + 1 }}</p>
-            <p class="text-3xl mt-2">{{ s.emoji }}</p>
+            <div class="mt-3 mx-auto w-12 h-12 rounded-2xl bg-iris-500/15 border border-iris-400/25 flex items-center justify-center">
+              <component :is="s.icon" class="w-6 h-6 text-iris-200" />
+            </div>
             <p class="mt-3 font-display font-bold text-lg">{{ s.title }}</p>
             <p class="mt-1 text-[13px] text-zinc-400 leading-relaxed" v-html="s.desc"></p>
           </div>
@@ -98,7 +100,7 @@
 
       <!-- ══ commands ══ -->
       <section class="max-w-5xl mx-auto px-6 py-4">
-        <h2 class="font-display text-3xl font-bold text-center">คำสั่งเล่นเพลงบอท 🎵</h2>
+        <h2 class="font-display text-3xl font-bold text-center">คำสั่งเล่นเพลงบอท</h2>
         <div class="mt-6 glass-panel p-5 sm:p-6">
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 max-w-2xl mx-auto text-[13px] text-zinc-400">
             <p v-for="c in mainCmds" :key="c.cmd"><code class="font-mono text-iris-100 bg-iris-500/15 border border-iris-400/25 rounded-lg px-2 py-0.5">{{ c.cmd }}</code> — {{ c.desc }}</p>
@@ -126,6 +128,9 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import {
+  Gift, Bot, Music, Home, Headphones, MousePointerClick, SlidersHorizontal,
+} from 'lucide-vue-next'
 import SiteNav from '../components/SiteNav.vue'
 import SiteFooter from '../components/SiteFooter.vue'
 import TypingDemo from '../components/TypingDemo.vue'
@@ -149,9 +154,9 @@ const mainCmds = [
 ]
 
 const steps = [
-  { emoji: '👆', title: 'กดเชิญบอท', desc: 'กดปุ่ม <b>เชิญบอทเข้าดิสคอร์ด</b><br/>ด้านบนได้เลย' },
-  { emoji: '🎧', title: 'ลากเข้าห้องเสียง', desc: 'ลากบอทเข้าห้องเสียง<br/>แล้วพิมพ์ <b>/play</b> ชื่อเพลง' },
-  { emoji: '🎛️', title: 'ตั้ง DJ', desc: 'สร้าง role ชื่อ <b>DJ</b><br/>ให้คนที่คุมเพลงได้' },
+  { icon: MousePointerClick, title: 'กดเชิญบอท', desc: 'กดปุ่ม <b>เชิญบอทเข้าดิสคอร์ด</b><br/>ด้านบนได้เลย' },
+  { icon: Headphones, title: 'ลากเข้าห้องเสียง', desc: 'ลากบอทเข้าห้องเสียง<br/>แล้วพิมพ์ <b>/play</b> ชื่อเพลง' },
+  { icon: SlidersHorizontal, title: 'ตั้ง DJ', desc: 'สร้าง role ชื่อ <b>DJ</b><br/>ให้คนที่คุมเพลงได้' },
 ]
 
 let timer = null

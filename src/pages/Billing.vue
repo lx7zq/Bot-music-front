@@ -6,12 +6,22 @@
     </div>
 
     <main class="relative flex-1 w-full max-w-xl mx-auto px-6 py-12">
-      <h1 class="font-display text-3xl font-bold tracking-tight text-center">ส่งสลิป 🧾</h1>
+      <h1 class="font-display text-3xl font-bold tracking-tight text-center flex items-center justify-center gap-2.5">
+        <Receipt class="w-7 h-7 text-iris-200" />ส่งสลิป
+      </h1>
       <p class="mt-2 text-sm text-zinc-500 text-center">จ่ายแล้วอัปโหลดตรงนี้ เจ้าของตรวจแล้วต่ออายุให้ (ปกติไม่กี่นาที)</p>
 
       <!-- status card -->
       <div class="glass-panel mt-6 p-5 flex items-center gap-4">
-        <span class="text-3xl shrink-0">{{ subIcon }}</span>
+        <span class="w-11 h-11 rounded-2xl flex items-center justify-center shrink-0 border"
+          :class="{
+            'bg-emerald-500/15 border-emerald-400/25 text-emerald-300': subTone === 'ok',
+            'bg-amber-500/15 border-amber-400/25 text-amber-300': subTone === 'warn',
+            'bg-red-500/15 border-red-400/25 text-red-300': subTone === 'bad',
+            'bg-white/5 border-white/10 text-zinc-500': subTone === 'idle',
+          }">
+          <component :is="subIcon" class="w-5 h-5" />
+        </span>
         <div class="min-w-0">
           <p class="text-[11px] uppercase tracking-[0.18em] text-zinc-500">สถานะดิสนี้</p>
           <p class="text-sm font-medium truncate">{{ subText }}</p>
@@ -37,8 +47,8 @@
           <div class="mt-2 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-5 text-center cursor-pointer hover:border-iris-400/40 hover:bg-white/[0.04] transition">
             <input @change="onFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" ref="fileInput" />
             <div @click="$refs.fileInput.click()">
-              <p class="text-2xl">📤</p>
-              <p class="mt-1 text-[13px] text-zinc-300">{{ file ? file.name : 'แตะเพื่อเลือกรูป (png/jpg ไม่เกิน 5MB)' }}</p>
+              <Upload class="w-6 h-6 mx-auto text-zinc-500" />
+              <p class="mt-2 text-[13px] text-zinc-300">{{ file ? file.name : 'แตะเพื่อเลือกรูป (png/jpg ไม่เกิน 5MB)' }}</p>
             </div>
           </div>
         </label>
@@ -48,7 +58,7 @@
           {{ sending ? 'กำลังส่ง...' : 'ส่งสลิป' }}
         </button>
 
-        <p class="text-xs text-zinc-600 text-center">รูปสลิปถูกลบทันทีหลังตรวจเสร็จ ไม่เก็บไว้ • ส่งแล้วไม่ต้องส่งซ้ำนะ ♡</p>
+        <p class="text-xs text-zinc-600 text-center">รูปสลิปถูกลบทันทีหลังตรวจเสร็จ ไม่เก็บไว้ • ส่งแล้วไม่ต้องส่งซ้ำ</p>
       </div>
     </main>
 
@@ -59,6 +69,9 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import {
+  Receipt, Upload, CheckCircle2, Gift, AlertTriangle, XCircle, MinusCircle,
+} from 'lucide-vue-next'
 import SiteNav from '../components/SiteNav.vue'
 import SiteFooter from '../components/SiteFooter.vue'
 import { API_URL } from '../config'
@@ -86,12 +99,20 @@ async function refresh() {
   }
 }
 
+const subTone = computed(() => {
+  if (!sub.value) return 'idle'
+  if (sub.value.paid || sub.value.trial) return 'ok'
+  if (sub.value.in_grace) return 'warn'
+  if (sub.value.paid_until || sub.value.trial_expired) return 'bad'
+  return 'idle'
+})
+
 const subIcon = computed(() => {
-  if (!sub.value) return '💤'
-  if (sub.value.paid) return '✅'
-  if (sub.value.trial) return '🎁'
-  if (sub.value.in_grace) return '⚠️'
-  return '❌'
+  if (!sub.value) return MinusCircle
+  if (sub.value.paid) return CheckCircle2
+  if (sub.value.trial) return Gift
+  if (sub.value.in_grace) return AlertTriangle
+  return XCircle
 })
 
 const subText = computed(() => {
@@ -117,11 +138,11 @@ async function submit() {
     )
     const data = await r.json()
     if (!r.ok) throw new Error(data.detail || 'ส่งไม่สำเร็จ')
-    statusLine.value = { ok: true, text: '✅ รับสลิปแล้ว กำลังรอตรวจ (ปกติไม่กี่นาที) ส่งแล้วไม่ต้องส่งซ้ำนะ ♡' }
+    statusLine.value = { ok: true, text: 'รับสลิปแล้ว กำลังรอตรวจ (ปกติไม่กี่นาที) ส่งแล้วไม่ต้องส่งซ้ำ' }
     file.value = null
     await refresh()
   } catch (e) {
-    statusLine.value = { ok: false, text: `❌ ${e.message} ลองใหม่นะ` }
+    statusLine.value = { ok: false, text: `${e.message} ลองใหม่อีกครั้ง` }
   } finally {
     sending.value = false
   }

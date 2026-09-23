@@ -8,9 +8,9 @@
     <main class="relative flex-1 w-full max-w-3xl mx-auto px-6 py-12">
       <div class="text-center">
         <div v-if="trialDays > 0" class="inline-flex items-center gap-2 rounded-full border border-emerald-400/30 bg-emerald-500/10 px-4 py-1.5 text-[13px] text-emerald-200">
-          🎁 ดิสใหม่ทดลองใช้ฟรี {{ trialDays }} วัน ไม่ต้องจ่ายก่อน
+          <Gift class="w-4 h-4" />ดิสใหม่ทดลองใช้ฟรี {{ trialDays }} วัน ไม่ต้องจ่ายก่อน
         </div>
-        <h1 class="mt-4 font-display text-4xl font-bold tracking-tight">แพ็กเกจเดียว จบ 🐻</h1>
+        <h1 class="mt-4 font-display text-4xl font-bold tracking-tight">แพ็กเกจเดียว จบ</h1>
         <p class="mt-2 text-sm text-zinc-500">จ่ายดิสละครั้งเดียว ใช้ได้ทุกห้องในดิสนั้น</p>
       </div>
 
@@ -20,7 +20,7 @@
           <div class="flex-1 text-center sm:text-left">
             <p class="font-display text-5xl font-bold">{{ priceText }}<span class="text-lg text-zinc-400 font-sans">฿/เดือน</span></p>
             <ul class="mt-4 space-y-2 text-sm text-zinc-300 text-left inline-block">
-              <li v-for="t in perks" :key="t" class="flex gap-2"><span class="text-emerald-300">✓</span>{{ t }}</li>
+              <li v-for="t in perks" :key="t" class="flex gap-2 items-start"><Check class="w-4 h-4 mt-0.5 text-emerald-300 shrink-0" />{{ t }}</li>
             </ul>
           </div>
           <div class="text-center shrink-0">
@@ -28,14 +28,14 @@
               <img :src="qrUrl" alt="QR พร้อมเพย์" class="w-52 h-52" />
             </div>
             <div v-else class="w-52 h-52 mx-auto rounded-2xl border border-dashed border-white/15 flex items-center justify-center text-xs text-zinc-600 px-6">
-              ช่องทางจ่ายเงินยังไม่พร้อม ติดต่อแอดมินก่อนนะ ♡
+              ช่องทางจ่ายเงินยังไม่พร้อม ติดต่อแอดมินก่อน
             </div>
-            <p v-if="qrUrl" class="mt-3 text-[13px] text-zinc-300">สแกนจ่าย {{ priceText }}฿ เป๊ะๆ<br/>แล้วกดปุ่มส่งสลิป ♡</p>
+            <p v-if="qrUrl" class="mt-3 text-[13px] text-zinc-300">สแกนจ่าย {{ priceText }}฿ เป๊ะๆ<br/>แล้วกดปุ่มส่งสลิป</p>
           </div>
         </div>
         <div class="mt-6 flex flex-col sm:flex-row justify-center gap-3 text-sm">
-          <RouterLink to="/billing" class="px-7 py-3 rounded-full bg-iris-500 hover:bg-iris-400 text-white font-semibold transition text-center active:scale-95">🧾 ส่งสลิป</RouterLink>
-          <a :href="invite" target="_blank" rel="noopener" class="px-7 py-3 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 font-medium transition text-center active:scale-95">🤖 เชิญบอทเข้าดิส</a>
+          <RouterLink to="/billing" class="px-7 py-3 rounded-full bg-iris-500 hover:bg-iris-400 text-white font-semibold transition text-center active:scale-95 inline-flex items-center justify-center gap-2"><Receipt class="w-4 h-4" />ส่งสลิป</RouterLink>
+          <a :href="invite" target="_blank" rel="noopener" class="px-7 py-3 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 font-medium transition text-center active:scale-95 inline-flex items-center justify-center gap-2"><Bot class="w-4 h-4" />เชิญบอทเข้าดิส</a>
         </div>
       </div>
 
@@ -75,6 +75,7 @@
 import { ref, onMounted } from 'vue'
 import generatePayload from 'promptpay-qr'
 import QRCode from 'qrcode'
+import { Gift, Check, Receipt, Bot } from 'lucide-vue-next'
 import SiteNav from '../components/SiteNav.vue'
 import SiteFooter from '../components/SiteFooter.vue'
 import { API_URL, inviteUrl } from '../config'

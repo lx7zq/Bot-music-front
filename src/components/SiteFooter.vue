@@ -3,7 +3,7 @@
     <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
       <div class="flex items-center gap-2 text-sm text-zinc-500">
         <img src="/bear-logo.png" alt="" class="w-5 h-5 rounded object-contain opacity-70" />
-        <span>ไอแว่น DJ — หมีเปิดเพลงประจำดิสคุณ 🐻</span>
+        <span>ไอแว่น DJ — บอทเพลงประจำดิสคอร์ดของคุณ</span>
       </div>
       <div class="flex flex-wrap justify-center gap-x-5 gap-y-2 text-xs text-zinc-500">
         <RouterLink to="/pricing" class="hover:text-zinc-200">แพ็กเกจ</RouterLink>

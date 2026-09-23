@@ -2,8 +2,8 @@
   <div class="app-root min-h-screen bg-[#0a0a12] font-sans text-zinc-100 flex flex-col">
     <SiteNav />
     <div class="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
-      <h1 class="font-display text-3xl font-bold tracking-tight">ข้อกำหนดการให้บริการ 📜</h1>
-      <p class="mt-2 text-sm text-zinc-500">ไอแว่น 🐻 DJ — Discord Music Bot • อัปเดตล่าสุด: 23 กันยายน 2026</p>
+      <h1 class="font-display text-3xl font-bold tracking-tight">ข้อกำหนดการให้บริการ</h1>
+      <p class="mt-2 text-sm text-zinc-500">ไอแว่น DJ — Discord Music Bot • อัปเดตล่าสุด: 23 กันยายน 2026</p>
 
       <div class="glass-panel mt-8 p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-zinc-300">
         <section>
