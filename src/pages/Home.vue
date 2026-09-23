@@ -11,8 +11,13 @@
       </p>
 
       <div class="mt-8 flex flex-wrap justify-center gap-3 text-sm">
-        <RouterLink to="/terms" class="px-5 py-2.5 rounded-full bg-indigo-500 hover:bg-indigo-400 text-white font-medium transition">ข้อกำหนดการให้บริการ</RouterLink>
-        <RouterLink to="/privacy" class="px-5 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition">นโยบายความเป็นส่วนตัว</RouterLink>
+        <a :href="invite" target="_blank" rel="noopener" class="px-5 py-2.5 rounded-full bg-indigo-500 hover:bg-indigo-400 text-white font-medium transition">เชิญบอทเข้าดิส</a>
+        <RouterLink to="/pricing" class="px-5 py-2.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition">แพ็กเกจ 99฿/เดือน</RouterLink>
+      </div>
+
+      <div class="mt-4 flex flex-wrap justify-center gap-3 text-sm">
+        <RouterLink to="/terms" class="px-5 py-2.5 rounded-full border border-white/10 text-zinc-400 hover:text-zinc-100 transition">ข้อกำหนดการให้บริการ</RouterLink>
+        <RouterLink to="/privacy" class="px-5 py-2.5 rounded-full border border-white/10 text-zinc-400 hover:text-zinc-100 transition">นโยบายความเป็นส่วนตัว</RouterLink>
       </div>
 
       <div class="glass-panel mt-10 p-5 text-left text-sm text-zinc-400 leading-relaxed w-full">
@@ -27,6 +32,8 @@
 
     <footer class="border-t border-white/10 py-5">
       <div class="max-w-3xl mx-auto px-6 flex flex-wrap justify-center gap-5 text-xs text-zinc-500">
+        <RouterLink to="/pricing" class="hover:text-zinc-200">Pricing</RouterLink>
+        <RouterLink to="/billing" class="hover:text-zinc-200">ส่งสลิป</RouterLink>
         <RouterLink to="/terms" class="hover:text-zinc-200">Terms of Service</RouterLink>
         <RouterLink to="/privacy" class="hover:text-zinc-200">Privacy Policy</RouterLink>
         <a href="https://discord.com/terms" target="_blank" rel="noopener" class="hover:text-zinc-200">Discord Terms</a>
@@ -34,3 +41,8 @@
     </footer>
   </div>
 </template>
+
+<script setup>
+import { inviteUrl } from '../config'
+const invite = inviteUrl()
+</script>

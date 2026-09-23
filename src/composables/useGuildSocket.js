@@ -15,6 +15,8 @@ export function useGuildSocket(guildId /* Ref<string> */) {
       : ''
   )
   const canControl = ref(false)
+  const subOk = ref(true)
+  const paidUntil = ref(null)
 
   let ws = null
   let reconnectTimer = null
@@ -27,6 +29,8 @@ export function useGuildSocket(guildId /* Ref<string> */) {
       )
       const data = await r.json()
       canControl.value = !!data.can_control
+      subOk.value = data.sub_ok !== false
+      paidUntil.value = data.paid_until || null
     } catch {
       canControl.value = false
     }
@@ -114,5 +118,5 @@ export function useGuildSocket(guildId /* Ref<string> */) {
     ws?.close()
   })
 
-  return { connected, state, sendAction, addSong, removeSong, canControl, dashboardKey }
+  return { connected, state, sendAction, addSong, removeSong, canControl, dashboardKey, subOk, paidUntil }
 }

@@ -55,6 +55,13 @@
       </div>
 
       <div v-else class="flex flex-col gap-5">
+        <!-- expired banner -->
+        <div v-if="!subOk" class="glass-panel px-4 py-3 flex items-center gap-3 text-sm text-amber-200/90">
+          <span class="shrink-0">⚠️</span>
+          <p>แพ็กเกจดิสนี้หมดอายุแล้ว{{ paidUntil ? ` (${paidUntil})` : '' }} — กดเล่นเพลงใหม่ไม่ได้
+            <RouterLink to="/pricing" class="underline font-medium">ต่ออายุ 99฿/เดือน</RouterLink>
+          </p>
+        </div>
         <!-- view-only notice: ลิงก์ไม่มี key = เห็นครบแต่ปุ่มแดงกดไม่ติด -->
         <div v-if="!canControl" class="glass-panel px-4 py-3 flex items-center gap-3 text-sm text-zinc-400">
           <span class="shrink-0">👀</span>
@@ -141,7 +148,7 @@ import { useToast } from '../composables/useToast'
 const route = useRoute()
 const guildId = computed(() => route.params.guildId)
 
-const { connected, state, sendAction, addSong, removeSong, canControl } = useGuildSocket(guildId)
+const { connected, state, sendAction, addSong, removeSong, canControl, subOk, paidUntil } = useGuildSocket(guildId)
 const { push: pushToast } = useToast()
 
 const handleAdd = (query) => {
