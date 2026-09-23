@@ -1,49 +1,66 @@
 <template>
-  <div class="app-root min-h-screen bg-[#0a0a12] font-sans text-zinc-100">
-    <div class="max-w-xl mx-auto px-6 py-12">
-      <RouterLink to="/pricing" class="text-sm text-zinc-400 hover:text-zinc-100">← กลับไปแพ็กเกจ</RouterLink>
+  <div class="app-root min-h-screen bg-[#0a0a12] font-sans text-zinc-100 flex flex-col">
+    <SiteNav />
+    <div class="fixed inset-0 pointer-events-none">
+      <div class="absolute -top-32 left-1/3 w-[420px] h-[420px] bg-iris-500/12 rounded-full blur-[120px]"></div>
+    </div>
 
-      <h1 class="mt-4 text-3xl font-bold tracking-tight">ส่งสลิป 🧾</h1>
-      <p class="mt-2 text-sm text-zinc-500">จ่ายแล้วอัปโหลดสลิปตรงนี้ เจ้าของตรวจแล้วต่ออายุให้ (ปกติไม่กี่นาที)</p>
+    <main class="relative flex-1 w-full max-w-xl mx-auto px-6 py-12">
+      <h1 class="font-display text-3xl font-bold tracking-tight text-center">ส่งสลิป 🧾</h1>
+      <p class="mt-2 text-sm text-zinc-500 text-center">จ่ายแล้วอัปโหลดตรงนี้ เจ้าของตรวจแล้วต่ออายุให้ (ปกติไม่กี่นาที)</p>
 
-      <div v-if="statusLine" class="glass-panel mt-6 px-4 py-3 text-sm" :class="statusLine.ok ? 'text-emerald-300' : 'text-zinc-300'">
+      <!-- status card -->
+      <div class="glass-panel mt-6 p-5 flex items-center gap-4">
+        <span class="text-3xl shrink-0">{{ subIcon }}</span>
+        <div class="min-w-0">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-zinc-500">สถานะดิสนี้</p>
+          <p class="text-sm font-medium truncate">{{ subText }}</p>
+          <button @click="refresh" class="mt-1 text-xs text-zinc-500 underline hover:text-zinc-200">รีเฟรช</button>
+        </div>
+      </div>
+
+      <div v-if="statusLine" class="mt-4 px-4 py-3 rounded-2xl text-sm border animate-pop-in"
+        :class="statusLine.ok ? 'border-emerald-400/30 bg-emerald-500/10 text-emerald-200' : 'border-red-400/30 bg-red-500/10 text-red-200'">
         {{ statusLine.text }}
       </div>
 
-      <div class="glass-panel mt-6 p-6 flex flex-col gap-4">
-        <label class="text-sm text-zinc-400">
-          รหัสดิส (Guild ID)
-          <span class="block text-xs text-zinc-600 mt-0.5">คลิกขวาชื่อดิสใน Discord → Copy Server ID (เปิดโหมดนักพัฒนา)</span>
+      <div class="glass-panel mt-4 p-6 flex flex-col gap-5">
+        <label class="text-sm">
+          <span class="font-medium">รหัสดิส (Server ID)</span>
           <input v-model="guildId" type="text" placeholder="เช่น 802130450096586772"
-            class="mt-2 w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none font-mono focus:border-indigo-400/50" />
+            class="mt-2 w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 text-sm outline-none font-mono focus:border-iris-400/50 focus:ring-1 focus:ring-iris-400/30 transition placeholder-zinc-600" />
+          <span class="block text-xs text-zinc-600 mt-1.5">คลิกขวาชื่อดิสใน Discord → Copy Server ID (ต้องเปิดโหมดนักพัฒนา)</span>
         </label>
 
-        <label class="text-sm text-zinc-400">
-          รูปสลิป (png/jpg ไม่เกิน 5MB)
-          <input @change="onFile" type="file" accept="image/png,image/jpeg,image/webp"
-            class="mt-2 block w-full text-sm text-zinc-300 file:mr-3 file:px-4 file:py-2 file:rounded-full file:border-0 file:bg-indigo-500 file:text-white file:text-sm hover:file:bg-indigo-400" />
+        <label class="text-sm">
+          <span class="font-medium">รูปสลิป</span>
+          <div class="mt-2 rounded-2xl border border-dashed border-white/15 bg-white/[0.02] px-4 py-5 text-center cursor-pointer hover:border-iris-400/40 hover:bg-white/[0.04] transition">
+            <input @change="onFile" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" ref="fileInput" />
+            <div @click="$refs.fileInput.click()">
+              <p class="text-2xl">📤</p>
+              <p class="mt-1 text-[13px] text-zinc-300">{{ file ? file.name : 'แตะเพื่อเลือกรูป (png/jpg ไม่เกิน 5MB)' }}</p>
+            </div>
+          </div>
         </label>
 
         <button @click="submit" :disabled="!canSubmit || sending"
-          class="rounded-full bg-indigo-500 hover:bg-indigo-400 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-medium px-5 py-2.5 transition">
+          class="rounded-full bg-iris-500 hover:bg-iris-400 disabled:opacity-40 disabled:cursor-not-allowed text-white text-sm font-semibold px-5 py-3 transition active:scale-95">
           {{ sending ? 'กำลังส่ง...' : 'ส่งสลิป' }}
         </button>
 
-        <p class="text-xs text-zinc-600">รูปสลิปถูกลบทันทีหลังตรวจเสร็จ ไม่เก็บไว้ (ดูนโยบายความเป็นส่วนตัวได้)</p>
+        <p class="text-xs text-zinc-600 text-center">รูปสลิปถูกลบทันทีหลังตรวจเสร็จ ไม่เก็บไว้ • ส่งแล้วไม่ต้องส่งซ้ำนะ ♡</p>
       </div>
+    </main>
 
-      <div v-if="guildId" class="glass-panel mt-6 p-5 text-sm text-zinc-400">
-        <p class="font-semibold text-zinc-200">สถานะดิสนี้</p>
-        <p class="mt-1">{{ subText }}</p>
-        <button @click="refresh" class="mt-2 text-xs underline hover:text-zinc-200">รีเฟรช</button>
-      </div>
-    </div>
+    <SiteFooter />
   </div>
 </template>
 
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
+import SiteNav from '../components/SiteNav.vue'
+import SiteFooter from '../components/SiteFooter.vue'
 import { API_URL } from '../config'
 
 const route = useRoute()
@@ -69,13 +86,21 @@ async function refresh() {
   }
 }
 
+const subIcon = computed(() => {
+  if (!sub.value) return '💤'
+  if (sub.value.paid) return '✅'
+  if (sub.value.trial) return '🎁'
+  if (sub.value.in_grace) return '⚠️'
+  return '❌'
+})
+
 const subText = computed(() => {
-  if (!sub.value) return '—'
-  if (sub.value.paid) return `✅ ใช้งานได้ถึง ${sub.value.paid_until}`
-  if (sub.value.trial) return `🎁 ทดลองใช้เหลืออีก ${sub.value.trial_left} วัน ยังไม่ต้องจ่าย`
-  if (sub.value.trial_expired) return 'หมดช่วงทดลองแล้ว — ส่งสลิปเพื่อเริ่มแพ็กเกจ 99฿/เดือนได้เลย'
-  if (sub.value.in_grace) return `⚠️ หมดอายุ ${sub.value.paid_until} (ยังฟังได้ช่วงผ่อนผัน รีบต่อนะ)`
-  if (sub.value.paid_until) return `❌ หมดอายุ ${sub.value.paid_until} — ส่งสลิปเพื่อต่ออายุ`
+  if (!sub.value) return guildId.value ? 'กำลังโหลด...' : 'ใส่รหัสดิสเพื่อดูสถานะ'
+  if (sub.value.paid) return `ใช้งานได้ถึง ${sub.value.paid_until}`
+  if (sub.value.trial) return `ทดลองใช้เหลืออีก ${sub.value.trial_left} วัน`
+  if (sub.value.trial_expired) return 'หมดช่วงทดลองแล้ว — ส่งสลิปเพื่อเริ่ม 99฿/เดือน'
+  if (sub.value.in_grace) return `หมดอายุ ${sub.value.paid_until} (ฟังได้ช่วงผ่อนผัน)`
+  if (sub.value.paid_until) return `หมดอายุ ${sub.value.paid_until}`
   return 'ยังไม่เคยสมัคร — ส่งสลิปครั้งแรกได้เลย'
 })
 

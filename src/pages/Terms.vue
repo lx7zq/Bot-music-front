@@ -1,9 +1,8 @@
 <template>
-  <div class="app-root min-h-screen bg-[#0a0a12] font-sans text-zinc-100">
-    <div class="max-w-3xl mx-auto px-6 py-12">
-      <RouterLink to="/" class="text-sm text-zinc-400 hover:text-zinc-100">← กลับหน้าแรก</RouterLink>
-
-      <h1 class="mt-4 text-3xl font-bold tracking-tight">ข้อกำหนดการให้บริการ (Terms of Service)</h1>
+  <div class="app-root min-h-screen bg-[#0a0a12] font-sans text-zinc-100 flex flex-col">
+    <SiteNav />
+    <div class="flex-1 w-full max-w-3xl mx-auto px-6 py-12">
+      <h1 class="font-display text-3xl font-bold tracking-tight">ข้อกำหนดการให้บริการ 📜</h1>
       <p class="mt-2 text-sm text-zinc-500">ไอแว่น 🐻 DJ — Discord Music Bot • อัปเดตล่าสุด: 23 กันยายน 2026</p>
 
       <div class="glass-panel mt-8 p-6 sm:p-8 space-y-6 text-sm leading-relaxed text-zinc-300">
@@ -72,8 +71,14 @@
 
       <div class="mt-6 flex gap-4 text-sm">
         <RouterLink to="/privacy" class="underline text-zinc-400 hover:text-zinc-100">นโยบายความเป็นส่วนตัว</RouterLink>
-        <RouterLink to="/" class="underline text-zinc-400 hover:text-zinc-100">หน้าแรก</RouterLink>
+        <RouterLink to="/pricing" class="underline text-zinc-400 hover:text-zinc-100">แพ็กเกจ</RouterLink>
       </div>
     </div>
+    <SiteFooter />
   </div>
 </template>
+
+<script setup>
+import SiteNav from '../components/SiteNav.vue'
+import SiteFooter from '../components/SiteFooter.vue'
+</script>

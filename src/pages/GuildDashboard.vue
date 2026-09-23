@@ -23,6 +23,7 @@
           <span class="text-zinc-400 text-sm font-medium">{{ state?.guild_name ?? guildId }}</span>
         </div>
         <div class="flex items-center gap-2">
+          <RouterLink to="/pricing" class="hidden md:inline text-xs px-2.5 py-1 rounded-full border border-white/10 bg-white/5 text-zinc-400 hover:text-zinc-100 transition">แพ็กเกจ</RouterLink>
           <span
             class="glass-pill"
             :class="connected ? 'text-emerald-300' : 'text-zinc-500'"
@@ -56,15 +57,15 @@
 
       <div v-else class="flex flex-col gap-5">
         <!-- expired banner -->
-        <div v-if="!subOk" class="glass-panel px-4 py-3 flex items-center gap-3 text-sm text-amber-200/90">
-          <span class="shrink-0">⚠️</span>
+        <div v-if="!subOk" class="rounded-2xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 flex items-center gap-3 text-sm text-amber-200/90 animate-fade-in">
+          <span class="shrink-0 text-lg">⚠️</span>
           <p>แพ็กเกจดิสนี้หมดอายุแล้ว{{ paidUntil ? ` (${paidUntil})` : '' }} — กดเล่นเพลงใหม่ไม่ได้
-            <RouterLink to="/pricing" class="underline font-medium">ต่ออายุ 99฿/เดือน</RouterLink>
+            <RouterLink to="/pricing" class="underline font-semibold">ต่ออายุ 99฿/เดือน</RouterLink>
           </p>
         </div>
         <!-- view-only notice: ลิงก์ไม่มี key = เห็นครบแต่ปุ่มแดงกดไม่ติด -->
-        <div v-if="!canControl" class="glass-panel px-4 py-3 flex items-center gap-3 text-sm text-zinc-400">
-          <span class="shrink-0">👀</span>
+        <div v-if="!canControl" class="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-3 flex items-center gap-3 text-sm text-zinc-400 animate-fade-in">
+          <span class="shrink-0 text-lg">👀</span>
           <p>โหมดดูอย่างเดียว — ปุ่มแดง (หยุดล้าง/เสียง/ลบเพลง) เป็นของ DJ กดปุ่ม <b class="text-zinc-200">เปิด Dashboard</b> ในดิสเพื่อขอลิงก์ DJ นะ ♡ ขอเพลงด้านล่างได้ปกติ</p>
         </div>
         <!-- slim now-playing hero -->
@@ -131,6 +132,15 @@
         </div>
       </div>
     </main>
+    <footer class="relative border-t border-white/10 py-4 mt-4">
+      <div class="max-w-7xl mx-auto px-6 flex flex-wrap justify-center gap-x-5 gap-y-1 text-[11px] text-zinc-600">
+        <span>🐻 ไอแว่น DJ</span>
+        <RouterLink to="/pricing" class="hover:text-zinc-300">แพ็กเกจ</RouterLink>
+        <RouterLink to="/billing" class="hover:text-zinc-300">ส่งสลิป</RouterLink>
+        <RouterLink to="/terms" class="hover:text-zinc-300">ข้อกำหนด</RouterLink>
+        <RouterLink to="/privacy" class="hover:text-zinc-300">ความเป็นส่วนตัว</RouterLink>
+      </div>
+    </footer>
     <Toast />
   </div>
 </template>
