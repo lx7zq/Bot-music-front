@@ -71,18 +71,28 @@
       <button @click="emit('action','skip')" class="ctrl-btn" title="ข้ามเพลง">
         <ChevronLast class="w-5 h-5" />
       </button>
-      <button @click="emit('action','stop')" class="ctrl-btn text-red-300/80 hover:bg-red-500/10 hover:text-red-300" title="หยุดและล้าง Queue">
+      <button
+        @click="emit('action','stop')"
+        :disabled="!canControl"
+        class="ctrl-btn text-red-300/80 hover:bg-red-500/10 hover:text-red-300 disabled:opacity-30 disabled:cursor-not-allowed disabled:hover:bg-transparent"
+        :title="canControl ? 'หยุดและล้าง Queue' : 'เฉพาะ DJ — ขอลิงก์ DJ จากปุ่มในดิส'"
+      >
         <Square class="w-5 h-5" />
       </button>
     </div>
 
-    <!-- volume -->
-    <div class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2 backdrop-blur">
+    <!-- volume (DJ only) -->
+    <div
+      class="flex items-center gap-3 rounded-xl border border-white/10 bg-white/5 px-3 py-2 backdrop-blur"
+      :class="{ 'opacity-40': !canControl }"
+      :title="canControl ? '' : 'เฉพาะ DJ — ขอลิงก์ DJ จากปุ่มในดิส'"
+    >
       <Volume2 class="w-4 h-4 text-zinc-400 shrink-0" />
       <input
         type="range" min="0" max="100" :value="volume"
+        :disabled="!canControl"
         @input="emit('volume', +$event.target.value)"
-        class="flex-1 accent-violet-400 cursor-pointer"
+        class="flex-1 accent-violet-400 cursor-pointer disabled:cursor-not-allowed"
       />
       <span class="text-xs font-mono text-zinc-400 w-10 text-right">{{ volume }}%</span>
     </div>
@@ -106,6 +116,7 @@ const props = defineProps({
   isPlaying: Boolean,
   isPaused: Boolean,
   volume: { type: Number, default: 50 },
+  canControl: { type: Boolean, default: true },
 })
 const emit = defineEmits(['action', 'volume'])
 

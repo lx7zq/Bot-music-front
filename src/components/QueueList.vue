@@ -42,10 +42,11 @@
         <span class="text-xs font-mono text-zinc-500 shrink-0">{{ fmtDur(song.duration) }}</span>
 
         <button
+          v-if="canControl"
           @click="emit('remove', i)"
           class="opacity-0 group-hover:opacity-100 transition w-7 h-7 rounded-lg flex items-center justify-center
                  text-zinc-500 hover:text-red-300 hover:bg-red-500/10 shrink-0"
-          title="ลบออก"
+          title="ลบออก (DJ)"
         >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
             <path d="M18 6 6 18M6 6l12 12"/>
@@ -79,7 +80,10 @@
 <script setup>
 import { ref, computed } from 'vue'
 
-const props = defineProps({ queue: { type: Array, default: () => [] } })
+const props = defineProps({
+  queue: { type: Array, default: () => [] },
+  canControl: { type: Boolean, default: true },
+})
 const emit = defineEmits(['remove', 'add'])
 
 const query = ref('')

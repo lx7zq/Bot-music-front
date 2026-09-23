@@ -8,9 +8,29 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
 export function useGuildSocket(guildId /* Ref<string> */) {
   const connected = ref(false)
   const state     = ref(null)
+  // กุญแจ DJ มาจากลิงก์ ?key= ที่บอทแจกในดิส (ไม่มี = ดู+ขอเพลงได้อย่างเดียว)
+  const dashboardKey = ref(
+    typeof location !== 'undefined'
+      ? new URLSearchParams(location.search).get('key') || ''
+      : ''
+  )
+  const canControl = ref(false)
 
   let ws = null
   let reconnectTimer = null
+
+  async function refreshCapability() {
+    if (!guildId.value) return
+    try {
+      const r = await fetch(
+        `${API_URL}/capability/${guildId.value}?key=${encodeURIComponent(dashboardKey.value)}`
+      )
+      const data = await r.json()
+      canControl.value = !!data.can_control
+    } catch {
+      canControl.value = false
+    }
+  }
 
   function connect() {
     try {
@@ -57,7 +77,7 @@ export function useGuildSocket(guildId /* Ref<string> */) {
   })
 
   async function sendAction(action, extra = {}) {
-    const payload = { guild_id: guildId.value, action, ...extra }
+    const payload = { guild_id: guildId.value, action, key: dashboardKey.value, ...extra }
     if (ws?.readyState === WebSocket.OPEN) {
       ws.send(JSON.stringify(payload))
       return
@@ -83,15 +103,16 @@ export function useGuildSocket(guildId /* Ref<string> */) {
     await fetch(`${API_URL}/remove_song`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ guild_id: guildId.value, index }),
+      body: JSON.stringify({ guild_id: guildId.value, index, key: dashboardKey.value }),
     }).catch(console.warn)
   }
 
+  refreshCapability()
   connect()
   onUnmounted(() => {
     clearTimeout(reconnectTimer)
     ws?.close()
   })
 
-  return { connected, state, sendAction, addSong, removeSong }
+  return { connected, state, sendAction, addSong, removeSong, canControl, dashboardKey }
 }

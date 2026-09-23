@@ -55,6 +55,11 @@
       </div>
 
       <div v-else class="flex flex-col gap-5">
+        <!-- view-only notice: ลิงก์ไม่มี key = เห็นครบแต่ปุ่มแดงกดไม่ติด -->
+        <div v-if="!canControl" class="glass-panel px-4 py-3 flex items-center gap-3 text-sm text-zinc-400">
+          <span class="shrink-0">👀</span>
+          <p>โหมดดูอย่างเดียว — ปุ่มแดง (หยุดล้าง/เสียง/ลบเพลง) เป็นของ DJ กดปุ่ม <b class="text-zinc-200">เปิด Dashboard</b> ในดิสเพื่อขอลิงก์ DJ นะ ♡ ขอเพลงด้านล่างได้ปกติ</p>
+        </div>
         <!-- slim now-playing hero -->
         <section class="glass-panel relative overflow-hidden p-5 animate-fade-in">
           <div v-if="state.now_playing?.thumbnail"
@@ -92,6 +97,7 @@
               :is-playing="state.is_playing"
               :is-paused="state.is_paused"
               :volume="state.volume ?? 50"
+              :can-control="canControl"
               @action="sendAction"
               @volume="v => sendAction('volume', { value: v })"
             />
@@ -111,6 +117,7 @@
 
           <QueueList
             :queue="state.queue ?? []"
+            :can-control="canControl"
             @remove="removeSong"
             @add="handleAdd"
           />
@@ -134,7 +141,7 @@ import { useToast } from '../composables/useToast'
 const route = useRoute()
 const guildId = computed(() => route.params.guildId)
 
-const { connected, state, sendAction, addSong, removeSong } = useGuildSocket(guildId)
+const { connected, state, sendAction, addSong, removeSong, canControl } = useGuildSocket(guildId)
 const { push: pushToast } = useToast()
 
 const handleAdd = (query) => {
