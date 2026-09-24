@@ -203,7 +203,7 @@ const subText = computed(() => {
   if (!sub.value) return guildId.value ? 'กำลังโหลด...' : 'ใส่รหัสดิสเพื่อดูสถานะ'
   if (sub.value.paid) return `ใช้งานได้ถึง ${sub.value.paid_until}`
   if (sub.value.trial) return `ทดลองใช้เหลืออีก ${sub.value.trial_left} วัน`
-  if (sub.value.trial_expired) return 'หมดช่วงทดลองแล้ว — ส่งสลิปเพื่อเริ่ม 99฿/เดือน'
+  if (sub.value.trial_expired) return 'หมดช่วงทดลองแล้ว — ส่งสลิปเพื่อเริ่ม 49฿/เดือน'
   if (sub.value.in_grace) return `หมดอายุ ${sub.value.paid_until} (ฟังได้ช่วงผ่อนผัน)`
   if (sub.value.paid_until) return `หมดอายุ ${sub.value.paid_until}`
   return 'ยังไม่เคยสมัคร — ส่งสลิปครั้งแรกได้เลย'

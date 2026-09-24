@@ -60,7 +60,7 @@
         <div v-if="!subOk" class="rounded-2xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 flex items-center gap-3 text-sm text-amber-200/90 animate-fade-in">
           <AlertTriangle class="shrink-0 w-5 h-5" />
           <p>แพ็กเกจดิสนี้หมดอายุแล้ว{{ paidUntil ? ` (${paidUntil})` : '' }} — กดเล่นเพลงใหม่ไม่ได้
-            <RouterLink to="/pricing" class="underline font-semibold">ต่ออายุ 99฿/เดือน</RouterLink>
+            <RouterLink to="/pricing" class="underline font-semibold">ต่ออายุ 49฿/เดือน</RouterLink>
           </p>
         </div>
         <!-- view-only notice: ลิงก์ไม่มี key = เห็นครบแต่ปุ่มแดงกดไม่ติด -->

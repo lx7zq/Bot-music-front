@@ -82,7 +82,7 @@ import SiteFooter from '../components/SiteFooter.vue'
 import { API_URL, inviteUrl } from '../config'
 
 const invite = inviteUrl()
-const priceText = ref('99')
+const priceText = ref('49')
 const planDays = ref(30)
 const graceDays = ref(3)
 const trialDays = ref(30)
@@ -107,12 +107,12 @@ onMounted(async () => {
   try {
     const r = await fetch(`${API_URL}/billing/config`)
     const cfg = await r.json()
-    priceText.value = String(cfg.price ?? 99)
+    priceText.value = String(cfg.price ?? 49)
     planDays.value = cfg.plan_days ?? 30
     graceDays.value = cfg.grace_days ?? 3
     trialDays.value = cfg.trial_days ?? 0
     if (cfg.promptpay_id) {
-      const payload = generatePayload(cfg.promptpay_id, { amount: Number(cfg.price ?? 99) })
+      const payload = generatePayload(cfg.promptpay_id, { amount: Number(cfg.price ?? 49) })
       qrUrl.value = await QRCode.toDataURL(payload, { width: 208, margin: 1 })
     }
   } catch (e) {

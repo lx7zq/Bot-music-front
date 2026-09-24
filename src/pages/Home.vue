@@ -25,7 +25,7 @@
         <p class="mt-2 text-zinc-400 text-sm max-w-xl mx-auto">แค่เอาเข้าดิสก็เล่นได้เลย — พิมพ์ <code class="px-1.5 py-0.5 rounded bg-iris-500/20 border border-iris-400/30 text-iris-100 font-mono text-[13px]">/play</code> ชื่อเพลง จบ</p>
         <div class="mt-7 flex flex-wrap justify-center gap-3 text-sm">
           <a :href="invite" target="_blank" rel="noopener" class="px-8 py-3.5 rounded-full bg-iris-500 hover:bg-iris-400 text-white font-semibold transition shadow-[0_4px_28px_rgba(83,74,183,0.5)] active:scale-95 inline-flex items-center gap-2"><Bot class="w-4 h-4" />เชิญบอทเข้าดิสคอร์ด</a>
-          <RouterLink to="/pricing" class="px-8 py-3.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 font-medium transition active:scale-95">ดูแพ็กเกจ 99฿</RouterLink>
+          <RouterLink to="/pricing" class="px-8 py-3.5 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 font-medium transition active:scale-95">ดูแพ็กเกจ 49฿</RouterLink>
         </div>
       </section>
 
@@ -113,7 +113,7 @@
       <section class="max-w-5xl mx-auto px-6 py-10">
         <div class="glass-panel p-6 sm:p-8 text-center relative overflow-hidden">
           <div class="absolute -top-20 left-1/2 -translate-x-1/2 w-[420px] h-[220px] bg-iris-500/20 rounded-full blur-[80px] pointer-events-none"></div>
-          <p class="relative font-display text-4xl font-bold">99<span class="text-lg text-zinc-400 font-sans">฿/เดือน/ดิส</span></p>
+          <p class="relative font-display text-4xl font-bold">49<span class="text-lg text-zinc-400 font-sans">฿/เดือน/ดิส</span></p>
           <p class="relative mt-2 text-sm text-zinc-400">ฟรี 30 วันแรก • ยกเลิกเมื่อไรก็ได้</p>
           <div class="relative mt-5">
             <RouterLink to="/pricing" class="inline-block px-7 py-3 rounded-full bg-iris-500 hover:bg-iris-400 text-white text-sm font-semibold transition active:scale-95">ดูแพ็กเกจ + สแกนจ่าย</RouterLink>
