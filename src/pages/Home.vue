@@ -156,7 +156,7 @@ const mainCmds = [
 const steps = [
   { icon: MousePointerClick, title: 'กดเชิญบอท', desc: 'กดปุ่ม <b>เชิญบอทเข้าดิสคอร์ด</b><br/>ด้านบนได้เลย' },
   { icon: Headphones, title: 'ลากเข้าห้องเสียง', desc: 'ลากบอทเข้าห้องเสียง<br/>แล้วพิมพ์ <b>/play</b> ชื่อเพลง' },
-  { icon: SlidersHorizontal, title: 'ตั้ง DJ', desc: 'สร้าง role ชื่อ <b>DJ</b><br/>ให้คนที่คุมเพลงได้' },
+  { icon: SlidersHorizontal, title: 'ตั้ง DJ', desc: 'สร้าง role ชื่อ <b>DJ</b> ให้คนที่คุมเพลงได้<br/>อยากได้ห้องเพลงส่วนตัว พิมพ์ <b>/setup</b> ในดิส' },
 ]
 
 let timer = null

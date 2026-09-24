@@ -46,6 +46,7 @@
           <li class="flex gap-3"><span class="w-6 h-6 rounded-full bg-iris-500 text-white text-xs font-bold flex items-center justify-center shrink-0">1</span><span><b class="text-zinc-200">เชิญบอท</b> แล้วลากเข้าห้องเสียง — ฟรี {{ trialDays }} วันแรกอัตโนมัติ</span></li>
           <li class="flex gap-3"><span class="w-6 h-6 rounded-full bg-iris-500 text-white text-xs font-bold flex items-center justify-center shrink-0">2</span><span>สร้าง role <code class="px-1.5 py-0.5 rounded bg-white/10 text-zinc-100 font-mono text-xs">DJ</code> ให้คนที่คุมเพลงได้ (แอดมินได้สิทธิ์อัตโนมัติ)</span></li>
           <li class="flex gap-3"><span class="w-6 h-6 rounded-full bg-iris-500 text-white text-xs font-bold flex items-center justify-center shrink-0">3</span><span>สแกนจ่าย + <RouterLink to="/billing" class="underline text-zinc-200">ส่งสลิป</RouterLink> รอตรวจไม่เกิน 1 วัน (ปกติไม่กี่นาที)</span></li>
+          <li class="flex gap-3"><span class="w-6 h-6 rounded-full bg-iris-500 text-white text-xs font-bold flex items-center justify-center shrink-0">4</span><span><b class="text-zinc-200">อยากได้ห้องเพลงส่วนตัว?</b> แอดมินพิมพ์ <code class="px-1.5 py-0.5 rounded bg-white/10 text-zinc-100 font-mono text-xs">/setup</code> ให้บอทสร้างห้อง <code class="px-1.5 py-0.5 rounded bg-white/10 text-zinc-100 font-mono text-xs">#ไอแว่น-ขอเพลง</code> ให้ — เลือกได้ว่าทุกคนเห็น / เฉพาะคนมี role (เช่น <code class="px-1.5 py-0.5 rounded bg-white/10 text-zinc-100 font-mono text-xs">/setup role:@user</code>) / เฉพาะ DJ</span></li>
         </ol>
       </div>
 
@@ -99,6 +100,7 @@ const faqs = [
   { q: 'จ่ายแล้วใช้ได้เมื่อไร?', a: 'ส่งสลิปแล้วรอเจ้าของตรวจ ปกติไม่กี่นาที (ไม่เกิน 1 วัน) อนุมัติแล้วใช้ได้ทันที นับ 30 วันจากวันหมดของเดิมถ้ายังไม่หมด' },
   { q: 'ใครคุมเพลงได้บ้าง?', a: 'คนมี role ชื่อ DJ หรือแอดมินดิสคุมได้ทุกอย่าง เพื่อนในห้องเสียงขอเพลง/ข้ามเพลงได้ปกติ ไม่ต้อง login' },
   { q: 'คืนเงินได้ไหม?', a: 'ได้เฉพาะกรณีบอทใช้ไม่ได้เกิน 7 วันติดจากความผิดของเรา ยกเลิกเมื่อไรก็ได้โดยแค่ไม่ต้องต่ออายุ' },
+  { q: '/setup คืออะไร?', a: 'คำสั่งให้บอทสร้างห้อง #ไอแว่น-ขอเพลง ให้เอง (แอดมินเท่านั้น) เลือกได้ 3 แบบ: ทุกคนเห็น / เห็นเฉพาะ role สมาชิก เช่น /setup role:@user (คนเข้าใหม่ไม่เห็นห้องจนกว่ารับยศ) / เฉพาะ DJ+แอดมินด้วย private:True' },
 ]
 
 onMounted(async () => {
